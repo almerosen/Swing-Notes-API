@@ -1,15 +1,50 @@
 const notesModel = require("../models/notesModel")
 const moment = require("moment")
 
+exports.getAllNotes = async (req, res) => {
+    try {
+        const notes = await notesModel.getNotes()
+        
+        if (!notes) {
+            res.status(404).json(
+                {
+                    success: false,
+                    message: "No notes found"
+                }
+            )
+        }
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: "Successfully retrieved notes",
+                notes: notes
+            }
+        )
+
+    } catch (error) {
+        console.error("Error", error)
+    }
+}
+
 exports.createNewNote = async (req, res) => {
     try {
         const {title, text} = req.body
 
-        if (!title || !text) {
+        if (!title || title.length > 50) {
             return res.status(400).json(
                 {
                     success: false,
-                    message: "Plase fill in both title and text"
+                    message: "You need to fill in a title of max 50 characters"
+                }
+            )
+        }
+
+        if(!text || text.length > 300) {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "You need to till in a text of max 300 characters"
                 }
             )
         }
