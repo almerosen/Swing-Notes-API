@@ -1,3 +1,4 @@
+const { notesDb } = require("../database/database")
 const notesModel = require("../models/notesModel")
 const moment = require("moment")
 
@@ -5,8 +6,8 @@ exports.getAllNotes = async (req, res) => {
     try {
         const notes = await notesModel.getNotes()
         
-        if (!notes) {
-            res.status(404).json(
+        if (!notes || notes.length === 0) {
+            return res.status(404).json(
                 {
                     success: false,
                     message: "No notes found"
@@ -24,6 +25,12 @@ exports.getAllNotes = async (req, res) => {
 
     } catch (error) {
         console.error("Error", error)
+        return res.status(500).json( // status 500 - server error
+            {
+                success: false,
+                message: "Failed to get notes. Please try again"
+            }
+        )
     }
 }
 
@@ -70,6 +77,12 @@ exports.createNewNote = async (req, res) => {
 
     } catch (error) {
         console.error("Error creating new note", error)
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Failed to create a new note"
+            }
+        )
     }
 }
 
@@ -120,9 +133,45 @@ exports.updateNote = async (req, res) => {
         return res.status(500).json(
             {
                 success: false,
-                message: "Failed to update note"
+                message: "Failed to update note. Please try again"
             }
         )
+    }
+}
+
+exports.deleteNote = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const existingNote = await notesModel.getNoteById(id)
+
+        if(!existingNote) {
+            return res.status(404).json({
+                success: false,
+                message: "No note found"
+            })
+        }
+
+        const deletedNote = await notesModel.deleNoteFromDb(id)
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: "Successfully deleted note",
+                deletedNote: existingNote
+            }
+        )
+
+    } catch (error) {
+        console.error("Error when trying to delete note", error)
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Failed to delete note. Please try again"
+            }
+        )
+
+
     }
 }
 

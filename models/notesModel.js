@@ -27,4 +27,9 @@ const updateNoteById = async (id, updatedNote) => {
     
 }
 
-module.exports = {insertNoteToDb, getNotes, getNoteById, updateNoteById}
+const deleNoteFromDb =  async (id) => {
+    const deletedNote = await notesDb.remove({ _id: id })
+    return deletedNote
+}
+
+module.exports = {insertNoteToDb, getNotes, getNoteById, updateNoteById, deleNoteFromDb}
