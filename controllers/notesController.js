@@ -73,3 +73,46 @@ exports.createNewNote = async (req, res) => {
     }
 }
 
+exports.updateNote = async (req, res) => {
+    try {
+        const {id} = req.params
+        const {title, text} = req.body
+
+        const existingNote = await notesModel.getNoteById(id)
+
+        if(!existingNote) {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: "Note not found"
+                }
+            )
+        }
+
+        if (title) {
+            existingNote.title = title
+        }
+        if (text) {
+            existingNote.text = text
+        }
+
+        const updatedNote = await notesModel.updateNoteById(id, existingNote)
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: "Updated note successfully",
+                updatedNote: updatedNote
+            }
+        )
+    } catch (error) {
+        console.error("Error when trying to update note", error)
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Failed to update note"
+            }
+        )
+    }
+}
+

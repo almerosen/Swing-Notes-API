@@ -4,6 +4,7 @@ require("dotenv").config()
 const verifyJWT = (req, res, next) => {
     const authorizationHeader = req.headers.authorization // ["authorization"]
 
+    // Om en token saknas
     if(!authorizationHeader) {
         return res.status(401).json(
             {
@@ -22,7 +23,7 @@ const verifyJWT = (req, res, next) => {
                 return res.status(403).json(
                     {
                         success: false, 
-                        message: "Invalid token"
+                        message: "Invalid token" // Om token är felaktig
                     }
                 )
             }

@@ -17,9 +17,9 @@ exports.userRegister = async (req, res) => {
         }
 
         // Kolla om användarnamnet redan finns i databasen
-        const user = await getUser(username)
+        const user = await getUser(username.toLowerCase())
 
-        if(user == null) {
+        if(user) {
             return res.status(418).json(
                 {
                     success: false,
@@ -32,7 +32,7 @@ exports.userRegister = async (req, res) => {
         const hashedPassword = await hashPassword(password)
 
         const userData = {
-            username: username,
+            username: username.toLowerCase(),
             password: hashedPassword
         }
 
@@ -56,7 +56,7 @@ exports.userLogin = async (req, res) => {
     try {
         const { username, password } = req.body
 
-        const user = await getUser(username)
+        const user = await getUser(username.toLowerCase())
 
         if (user == null) {
             return res.status(404).json(

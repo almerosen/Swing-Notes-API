@@ -10,4 +10,14 @@ const insertNoteToDb = async (note) => {
     return newNote
 }
 
-module.exports = {insertNoteToDb, getNotes}
+const getNoteById = async (id) => {
+    const note = await notesDb.findOne({_id: id})
+    return note
+}
+
+const updateNoteById = async (id, updatedNote) => {
+    const updatedNoteResult = await notesDb.update({_id: id}, { $set: updatedNote })
+    return updatedNoteResult
+}
+
+module.exports = {insertNoteToDb, getNotes, getNoteById, updateNoteById}
