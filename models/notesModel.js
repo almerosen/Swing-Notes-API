@@ -16,8 +16,15 @@ const getNoteById = async (id) => {
 }
 
 const updateNoteById = async (id, updatedNote) => {
-    const updatedNoteResult = await notesDb.update({_id: id}, { $set: updatedNote })
-    return updatedNoteResult
+
+    const updateNote = await notesDb.update({_id: id}, { $set: updatedNote })
+
+    if (updateNote === 1) { // Om uppdateringen lyckades
+            return updatedNote
+    } else {
+            return null
+    }
+    
 }
 
 module.exports = {insertNoteToDb, getNotes, getNoteById, updateNoteById}

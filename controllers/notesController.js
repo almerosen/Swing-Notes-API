@@ -78,7 +78,7 @@ exports.updateNote = async (req, res) => {
         const {id} = req.params
         const {title, text} = req.body
 
-        const existingNote = await notesModel.getNoteById(id)
+        let existingNote = await notesModel.getNoteById(id)
 
         if(!existingNote) {
             return res.status(404).json(
@@ -89,14 +89,24 @@ exports.updateNote = async (req, res) => {
             )
         }
 
-        if (title) {
-            existingNote.title = title
-        }
-        if (text) {
-            existingNote.text = text
+        existingNote = {
+            ...existingNote,
+            title: title || existingNote.title, // om ny titel i req.body annars behåll den gamla
+            text: text || existingNote.text,
+            modifiedAt: moment().format("YYYY-MM-DD HH:mm")
         }
 
-        const updatedNote = await notesModel.updateNoteById(id, existingNote)
+        // if (title) {
+        //     existingNote.title = title
+        // }
+        // if (text) {
+        //     existingNote.text = text
+        // }
+
+        // existingNote.modifiedAt = moment().format("YYYY-MM-DD HH:mm")
+
+        // Skicka in den uppdaterade noten
+        const updatedNote = await notesModel.updateNoteById(id, existingNote) 
 
         return res.status(200).json(
             {
