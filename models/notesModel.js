@@ -1,6 +1,7 @@
 const {notesDb} = require("../database/database")
 const moment = require("moment")
 
+
 const getNotes = async () => {
     const notes = await notesDb.find({})
     return notes
