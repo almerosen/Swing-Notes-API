@@ -7,5 +7,6 @@ router.get("/", verifyJWT, notesController.getAllNotes)
 router.post("/", verifyJWT, notesController.createNewNote)
 router.put("/:id", verifyJWT, notesController.updateNote)
 router.delete("/:id", verifyJWT, notesController.deleteNote)
+router.get("/search", verifyJWT, notesController.searchNotesByTitle)
 
 module.exports = router

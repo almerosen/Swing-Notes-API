@@ -101,31 +101,15 @@ exports.updateNote = async (req, res) => {
                 }
             )
         }
-
-        existingNote = {
-            ...existingNote,
-            title: title || existingNote.title, // om ny titel i req.body annars behåll den gamla
-            text: text || existingNote.text,
-            modifiedAt: moment().format("YYYY-MM-DD HH:mm")
-        }
-
-        // if (title) {
-        //     existingNote.title = title
-        // }
-        // if (text) {
-        //     existingNote.text = text
-        // }
-
-        // existingNote.modifiedAt = moment().format("YYYY-MM-DD HH:mm")
-
-        // Skicka in den uppdaterade noten
-        const updatedNote = await notesModel.updateNoteById(id, existingNote) 
+   
+        const {updatedNote, updatedResult} = await notesModel.updateNoteById(id, { title, text}) 
 
         return res.status(200).json(
             {
                 success: true,
                 message: "Updated note successfully",
-                updatedNote: updatedNote
+                updatedNote: updatedNote,
+                updatedNotes: updatedResult
             }
         )
     } catch (error) {
@@ -174,4 +158,38 @@ exports.deleteNote = async (req, res) => {
 
     }
 }
+
+exports.searchNotesByTitle = async (req, res) => {
+    try {
+        const { query } = req.query
+
+        if (!query) {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "Please fill in a search query"
+                }
+            )
+        }
+
+        const notes = await notesModel.searchNotesByTitle(query)
+
+        return res.status(200).json(
+            {
+                success: true,
+                message: `Successfully searched for ${query}`,
+                notesFound: notes
+            }
+        )
+    } catch (error) {
+        console.error("Failed to search note in database", error)
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Error when searching in database. Please try again"
+            }
+        )
+    }
+}
+
 

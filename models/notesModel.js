@@ -1,4 +1,5 @@
 const {notesDb} = require("../database/database")
+const moment = require("moment")
 
 const getNotes = async () => {
     const notes = await notesDb.find({})
@@ -15,15 +16,21 @@ const getNoteById = async (id) => {
     return note
 }
 
-const updateNoteById = async (id, updatedNote) => {
+const updateNoteById = async (id, updates) => {
 
-    const updateNote = await notesDb.update({_id: id}, { $set: updatedNote })
+    const existingNote = await notesDb.findOne({_id: id})
 
-    if (updateNote === 1) { // Om uppdateringen lyckades
-            return updatedNote
-    } else {
-            return null
+    const updatedNote = {
+        ...existingNote,
+        title: updates.title || existingNote.title,
+        text: updates.text || existingNote.text,
+        modifiedAt: moment().format("YYYY-MM-DD HH:mm")
     }
+
+    const updatedResult = await notesDb.update({_id: id}, { $set: updatedNote })
+
+    return {updatedNote, updatedResult} // returnera uppdaterade noten och resultatet
+
     
 }
 
@@ -32,4 +39,18 @@ const deleNoteFromDb =  async (id) => {
     return deletedNote
 }
 
-module.exports = {insertNoteToDb, getNotes, getNoteById, updateNoteById, deleNoteFromDb}
+const searchNotesByTitle = async (query) => {
+    const regex = new RegExp(query, 'i')
+
+    const notes = await notesDb.find({ title: { $regex: regex} })
+    return notes
+}
+
+module.exports = {
+    insertNoteToDb, 
+    getNotes, 
+    getNoteById, 
+    updateNoteById, 
+    deleNoteFromDb, 
+    searchNotesByTitle
+}
