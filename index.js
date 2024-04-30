@@ -20,7 +20,3 @@ app.listen(process.env.PORT, process.env.BASE_URL, () => {
     console.log(`Server running at ${process.env.BASE_URL}:${process.env.PORT}`)
 })
 
-// app.get("/api/notes", async (req, res) => {
-//     const notes = await notesDb.find({})
-//     return res.send(notes)
-// })
