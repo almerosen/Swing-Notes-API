@@ -42,9 +42,7 @@ const deleteNoteFromDb =  async (id) => {
 }
 
 const searchNotesByTitle = async (query) => {
-    const regex = new RegExp(query, 'i')
-
-    const notes = await notesDb.find({ title: { $regex: regex} })
+    const notes = await notesDb.find({ title: { $regex: new RegExp(query, 'i')} }) // 'i' - makes the search case insensitive
     return notes
 }
 

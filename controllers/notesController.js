@@ -60,7 +60,7 @@ exports.createNewNote = async (req, res) => {
             title: title,
             text: text,
             createdAt: moment().format("YYYY-MM-DD HH:mm"),
-            userID: req.user.id // tar id från decoded token (från verifyJWT middleware)
+            userID: req.user.id // user id from decoded token ( see verifyJWT middleware)
         }
 
         const insertNote = await notesModel.insertNoteToDb(note)
