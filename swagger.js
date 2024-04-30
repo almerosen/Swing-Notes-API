@@ -45,21 +45,13 @@ const options = {
                 }
             },
             securitySchemes: {
-                ApiKeyAuth: {
-                    type: "apiKey",
-                    in: "header",
-                    name: "Authorization",
+                bearerAuth: {
+                    type: "http",
                     scheme: "bearer",
                     bearerFormat: "JWT",
-
-
                 }
             }    
-        },
-        // security: [{
-        //     ApiKeyAuth: [ ]
-        // }]
-        
+        },        
     },
 
     apis: ["./routes/*.js"],

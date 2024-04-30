@@ -18,7 +18,7 @@ const verifyJWT = require("../middleware/verifyJWT")
  * /api/notes:
  *   get:
  *     security:
- *       - ApiKeyAuth: []
+ *       - bearerAuth: []
  *     summary: Get all notes
  *     description: Retrieve all notes from the database
  *     tags: [Notes]
@@ -38,7 +38,7 @@ router.get("/", verifyJWT, notesController.getAllNotes)
  * /api/notes:
  *   post:
  *     security:
- *       - ApiKeyAuth: []
+ *       - bearerAuth: []
  *     summary: Create a new note
  *     description: Create a new note in the database
  *     tags: [Notes]
@@ -70,7 +70,7 @@ router.post("/", verifyJWT, notesController.createNewNote)
  * /api/notes/{id}:
  *   put:
  *     security:
- *       - ApiKeyAuth: []
+ *       - bearerAuth: []
  *     summary: Update a note
  *     description: Update a note in the database
  *     tags: [Notes]
@@ -111,7 +111,7 @@ router.put("/:id", verifyJWT, notesController.updateNote)
  * /api/notes/{id}:
  *   delete:
  *     security:
- *       - ApiKeyAuth: []
+ *       - bearerAuth: []
  *     summary: Delete a note
  *     description: Delete a note in the database
  *     tags: [Notes]
@@ -143,7 +143,7 @@ router.delete("/:id", verifyJWT, notesController.deleteNote)
  * /api/notes/search:
  *   get:
  *     security:
- *       - ApiKeyAuth: []
+ *       - bearerAuth: []
  *     summary: Search a note
  *     description: Search a note in the database
  *     tags: [Notes]
