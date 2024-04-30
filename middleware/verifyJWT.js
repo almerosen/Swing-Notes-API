@@ -4,17 +4,15 @@ require("dotenv").config()
 const verifyJWT = (req, res, next) => {
     const authorizationHeader = req.headers.authorization // ["authorization"]
 
-    // Om en token saknas
+    // If token is missing
     if(!authorizationHeader) {
         return res.status(401).json(
             {
                 success: false,
-                message: "Token missing"
+                message: "Token is missing"
             }
         )
     }
-
-    console.log(authorizationHeader) 
 
     const token = authorizationHeader.replace("Bearer ", "") // authorizationHeader.split(" ")[1]
 
@@ -23,11 +21,12 @@ const verifyJWT = (req, res, next) => {
                 return res.status(403).json(
                     {
                         success: false, 
-                        message: "Invalid token" // Om token är felaktig
+                        message: "Invalid token" // If the token is faulsy
                     }
                 )
             }
-            req.user = decodedToken // lägger till användarinformation (user id) från avkodade token
+            req.user = decodedToken // user Id (and iat, exp...) from decoded token. To use when creating new note to insert user ID...
+            console.log(req.user)
             next()
         }
     )

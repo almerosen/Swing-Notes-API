@@ -10,6 +10,7 @@ const getNotes = async () => {
 const insertNoteToDb = async (note) => {
     const newNote = await notesDb.insert(note)
     return newNote
+
 }
 
 const getNoteById = async (id) => {
@@ -23,19 +24,19 @@ const updateNoteById = async (id, updates) => {
 
     const updatedNote = {
         ...existingNote,
-        title: updates.title || existingNote.title,
-        text: updates.text || existingNote.text,
+        title: updates.title || existingNote.title, // Update if passed in from frontend
+        text: updates.text || existingNote.text, // Update if passed in from frontend
         modifiedAt: moment().format("YYYY-MM-DD HH:mm")
     }
 
     const updatedResult = await notesDb.update({_id: id}, { $set: updatedNote })
 
-    return {updatedNote, updatedResult} // returnera uppdaterade noten och resultatet
+    return {updatedNote, updatedResult} // return updated note and the result
 
     
 }
 
-const deleNoteFromDb =  async (id) => {
+const deleteNoteFromDb =  async (id) => {
     const deletedNote = await notesDb.remove({ _id: id })
     return deletedNote
 }
@@ -52,6 +53,6 @@ module.exports = {
     getNotes, 
     getNoteById, 
     updateNoteById, 
-    deleNoteFromDb, 
+    deleteNoteFromDb, 
     searchNotesByTitle
 }

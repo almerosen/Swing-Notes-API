@@ -4,7 +4,7 @@ const options = {
     swaggerDefinition: {
         openapi: "3.1.0",
         info: {
-            title: "Swing Notes application",
+            title: "Swing Notes API",
             version: "5.12.2",
             description: "API documentation",
         }, 
@@ -30,10 +30,38 @@ const options = {
                         }
                     }
 
+                },
+                User: {
+                    type: "object",
+                    required: ["username", "password"],
+                    properties: {
+                        username: {
+                            type: "string"
+                        },
+                        password: {
+                            type: "string"
+                        }
+                    }
                 }
-            }
-        }
+            },
+            securitySchemes: {
+                ApiKeyAuth: {
+                    type: "apiKey",
+                    in: "header",
+                    name: "Authorization",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+
+
+                }
+            }    
+        },
+        // security: [{
+        //     ApiKeyAuth: [ ]
+        // }]
+        
     },
+
     apis: ["./routes/*.js"],
 }
 

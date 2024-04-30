@@ -20,7 +20,7 @@ exports.userRegister = async (req, res) => {
         const user = await getUser(username.toLowerCase())
 
         if(user) {
-            return res.status(418).json(
+            return res.status(409).json(
                 {
                     success: false,
                     message: "Username already exists"
@@ -48,6 +48,12 @@ exports.userRegister = async (req, res) => {
 
     } catch (error) {
         console.error("Failed to create user accout")
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Failed to create user. Please try again."
+            }
+        )
     }
 }
 
@@ -71,7 +77,7 @@ exports.userLogin = async (req, res) => {
         const correctPassword = await comparePassword(password, user.password)
 
         if(!correctPassword) {
-            return res.status(401).json(
+            return res.status(403).json(
                 {
                     success: false,
                     message: "Wrong password"

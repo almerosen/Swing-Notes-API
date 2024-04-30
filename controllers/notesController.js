@@ -56,12 +56,10 @@ exports.createNewNote = async (req, res) => {
             )
         }
 
-        const date = moment().format("YYYY-MM-DD HH:mm")
-
         const note = {
             title: title,
             text: text,
-            createdAt: date,
+            createdAt: moment().format("YYYY-MM-DD HH:mm"),
             userID: req.user.id // tar id från decoded token (från verifyJWT middleware)
         }
 
@@ -71,7 +69,7 @@ exports.createNewNote = async (req, res) => {
             {
                 success: true,
                 message: "Successfully inserted new note",
-                note: note
+                note: insertNote
             }
         )
 
@@ -88,7 +86,7 @@ exports.createNewNote = async (req, res) => {
 
 exports.updateNote = async (req, res) => {
     try {
-        const {id} = req.params
+        const {id} = req.params //note id
         const {title, text} = req.body
 
         let existingNote = await notesModel.getNoteById(id)
@@ -108,8 +106,8 @@ exports.updateNote = async (req, res) => {
             {
                 success: true,
                 message: "Updated note successfully",
-                updatedNote: updatedNote,
-                updatedNotes: updatedResult
+                updatedNote, //the updated note
+                updatedNotes: updatedResult //the result, 1 if updated 
             }
         )
     } catch (error) {
@@ -136,13 +134,13 @@ exports.deleteNote = async (req, res) => {
             })
         }
 
-        const deletedNote = await notesModel.deleNoteFromDb(id)
+        const deletedNote = await notesModel.deleteNoteFromDb(id)
 
         return res.status(200).json(
             {
                 success: true,
                 message: "Successfully deleted note",
-                deletedNote: existingNote
+                deletedNote // the delete result. 1 if it was deleted
             }
         )
 
@@ -151,7 +149,7 @@ exports.deleteNote = async (req, res) => {
         return res.status(500).json(
             {
                 success: false,
-                message: "Failed to delete note. Please try again"
+                message: "Failed to delete the note. Please try again"
             }
         )
 
@@ -173,6 +171,15 @@ exports.searchNotesByTitle = async (req, res) => {
         }
 
         const notes = await notesModel.searchNotesByTitle(query)
+
+        if (notes.length === 0) { // It returns an empty array if nothing is found
+            return res.status(200).json(
+                {
+                    success: false,
+                    message: `No notes found that matched ${query}`
+                }
+            )
+        }
 
         return res.status(200).json(
             {
