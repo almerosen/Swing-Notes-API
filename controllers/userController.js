@@ -3,7 +3,7 @@ const {hashPassword, comparePassword} = require("../bcrypt")
 const jwt = require("jsonwebtoken")
 
 
-exports.userRegister = async (req, res) => {
+const userRegister = async (req, res) => {
     try {
         const { username, password } = req.body
 
@@ -16,7 +16,7 @@ exports.userRegister = async (req, res) => {
             )
         }
 
-        // Kolla om användarnamnet redan finns i databasen
+        // Check if user already exists
         const user = await getUser(username.toLowerCase())
 
         if(user) {
@@ -28,7 +28,7 @@ exports.userRegister = async (req, res) => {
             )
         }
 
-        // Kryptera lösenordet innan det sparas i databasen
+        // encrypt the password 
         const hashedPassword = await hashPassword(password)
 
         const userData = {
@@ -58,7 +58,7 @@ exports.userRegister = async (req, res) => {
 }
 
 
-exports.userLogin = async (req, res) => {
+const userLogin = async (req, res) => {
     try {
         const { username, password } = req.body
 
@@ -102,6 +102,17 @@ exports.userLogin = async (req, res) => {
         )
     } catch (error) {
         console.error("Error trying to log in", error)
+        return res.status(500).json(
+            {
+                sucess: false,
+                message: "Failed to login. Please try again"
+            }
+        )
     }  
+}
+
+module.exports = {
+    userRegister,
+    userLogin
 }
 

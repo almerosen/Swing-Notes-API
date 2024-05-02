@@ -2,7 +2,7 @@ const { notesDb } = require("../database/database")
 const notesModel = require("../models/notesModel")
 const moment = require("moment")
 
-exports.getAllNotes = async (req, res) => {
+const getAllNotes = async (req, res) => {
     try {
         const notes = await notesModel.getNotes()
         
@@ -34,7 +34,7 @@ exports.getAllNotes = async (req, res) => {
     }
 }
 
-exports.createNewNote = async (req, res) => {
+const createNewNote = async (req, res) => {
     try {
         const {title, text} = req.body
 
@@ -84,7 +84,7 @@ exports.createNewNote = async (req, res) => {
     }
 }
 
-exports.updateNote = async (req, res) => {
+const updateNote = async (req, res) => {
     try {
         const {id} = req.params //note id
         const {title, text} = req.body
@@ -121,7 +121,7 @@ exports.updateNote = async (req, res) => {
     }
 }
 
-exports.deleteNote = async (req, res) => {
+const deleteNote = async (req, res) => {
     try {
         const { id } = req.params
 
@@ -157,7 +157,7 @@ exports.deleteNote = async (req, res) => {
     }
 }
 
-exports.searchNotesByTitle = async (req, res) => {
+const searchNotesByTitle = async (req, res) => {
     try {
         const { query } = req.query
 
@@ -197,6 +197,14 @@ exports.searchNotesByTitle = async (req, res) => {
             }
         )
     }
+}
+
+module.exports = {
+    getAllNotes,
+    createNewNote,
+    updateNote,
+    deleteNote,
+    searchNotesByTitle
 }
 
 

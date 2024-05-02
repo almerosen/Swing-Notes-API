@@ -6,13 +6,8 @@ const insertUserToDb = async (userData) => {
 }
 
 const getUser = async (username) => {
-    try {
-        const user = await usersDb.findOne({ username: username })
-        return user
-    } catch (error) {
-        console.error("Error get user", error)
-        throw new Error ("Error when getting user")
-    }
+    const user = await usersDb.findOne({ username: username })
+    return user
 }
 
 module.exports = {
