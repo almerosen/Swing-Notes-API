@@ -2,7 +2,7 @@ const swaggerJsdoc = require("swagger-jsdoc")
 
 const options = {
     swaggerDefinition: {
-        openapi: "3.1.0",
+        openapi: "3.0.0",
         info: {
             title: "Swing Notes API",
             version: "5.12.2",
@@ -11,7 +11,7 @@ const options = {
         servers: [
             {
                 url: "http://127.0.0.1:5000",
-                description: "Development server"
+                description: "Local server"
             }
         ],
         components: {
@@ -50,8 +50,13 @@ const options = {
                     scheme: "bearer",
                     bearerFormat: "JWT",
                 }
-            }    
-        },        
+            },
+            responses:{
+                UnauthorizedError: {
+                    description: "Access token is missing or invalid "   
+                }
+            }
+        }, 
     },
 
     apis: ["./routes/*.js"],

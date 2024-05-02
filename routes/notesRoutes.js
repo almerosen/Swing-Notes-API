@@ -27,7 +27,7 @@ const verifyJWT = require("../middleware/verifyJWT")
  *       '200':
  *         description: A list of all notes
  *       '401':
- *         description: Unauthorized
+ *         $ref: '#/components/responses/UnauthorizedError'
  *       '500':
  *         description: Server error
  */
@@ -57,7 +57,7 @@ router.get("/", verifyJWT, notesController.getAllNotes)
  *       '400':
  *         description: Bad request
  *       '401':
- *         description: Unauthorized
+ *         $ref: '#/components/responses/UnauthorizedError'
  *       '404':
  *         description: Not found
  *       '500':
@@ -98,7 +98,7 @@ router.post("/", verifyJWT, notesController.createNewNote)
  *       '400':
  *         description: Bad request
  *       '401':
- *         description: Unauthorized
+ *         $ref: '#/components/responses/UnauthorizedError'
  *       '404':
  *         description: Not found
  *       '500':
@@ -130,7 +130,7 @@ router.put("/:id", verifyJWT, notesController.updateNote)
  *       '400':
  *         description: Bad request
  *       '401':
- *         description: Unauthorized
+ *         $ref: '#/components/responses/UnauthorizedError'
  *       '404':
  *         description: Not found
  *       '500':
@@ -162,7 +162,7 @@ router.delete("/:id", verifyJWT, notesController.deleteNote)
  *       '400':
  *         description: Bad request
  *       '401':
- *         description: Unauthorized
+ *          $ref: '#/components/responses/UnauthorizedError'
  *       '404':
  *         description: Not found
  *       '500':
