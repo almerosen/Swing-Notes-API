@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 const verifyJWT = (req, res, next) => {
-    const authorizationHeader = req.headers.authorization // ["authorization"]
+    const authorizationHeader = req.headers.authorization 
 
     // If token is missing
     if(!authorizationHeader) {
@@ -14,14 +14,14 @@ const verifyJWT = (req, res, next) => {
         )
     }
 
-    const token = authorizationHeader.replace("Bearer ", "") // authorizationHeader.split(" ")[1]
+    const token = authorizationHeader.replace("Bearer ", "") 
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => { 
             if (err) {
                 return res.status(403).json(
                     {
                         success: false, 
-                        message: "Invalid token" // If the token is faulsy
+                        message: "Invalid token" 
                     }
                 )
             }
